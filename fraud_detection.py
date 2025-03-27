@@ -48,14 +48,14 @@ def load_and_combine_pkl_files(data_folder='data'):
         # Combine all DataFrames into one
         combined_df = pd.concat(df_list, ignore_index=True)
 
-        logging.info(f"✅ Loaded {len(pkl_files)} .pkl files into a single DataFrame with {len(combined_df)} rows.")
+        logging.info(f" Loaded {len(pkl_files)} .pkl files into a single DataFrame with {len(combined_df)} rows.")
         logging.info("Sample data:")
         logging.info(combined_df.head())
 
         return combined_df
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while loading and combining .pkl files: {e}")
+        logging.error(f" An error occurred while loading and combining .pkl files: {e}")
         raise
 
 # ==================================================
@@ -93,14 +93,14 @@ def feature_engineering(df):
         # Transaction frequency
         df['TRANSACTION_FREQUENCY'] = df.groupby('CUSTOMER_ID')['TX_DATETIME'].transform('count')
 
-        logging.info("✅ Feature Engineering Applied.")
+        logging.info(" Feature Engineering Applied.")
         logging.info("Sample data with new features:")
         logging.info(df.head())
 
         return df
 
     except Exception as e:
-        logging.error(f"❌ An error occurred during feature engineering: {e}")
+        logging.error(f" An error occurred during feature engineering: {e}")
         raise
 
 # ==================================================
@@ -123,14 +123,14 @@ def select_features_and_target(df):
         # Retain CUSTOMER_ID and TERMINAL_ID for later use
         metadata = df[['CUSTOMER_ID', 'TERMINAL_ID']]
 
-        logging.info("✅ Features and Target Selected.")
+        logging.info(" Features and Target Selected.")
         logging.info(f"Features shape: {X.shape}")
         logging.info(f"Target shape: {y.shape}")
 
         return X, y, metadata
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while selecting features and target: {e}")
+        logging.error(f" An error occurred while selecting features and target: {e}")
         raise
 
 # ==================================================
@@ -145,14 +145,14 @@ def split_data(X, y, metadata):
             X, y, metadata, test_size=0.3, random_state=42
         )
 
-        logging.info("✅ Data Split Completed.")
+        logging.info(" Data Split Completed.")
         logging.info(f"Training set shape: {X_train.shape}, {y_train.shape}")
         logging.info(f"Testing set shape: {X_test.shape}, {y_test.shape}")
 
         return X_train, X_test, y_train, y_test, metadata_test
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while splitting the data: {e}")
+        logging.error(f" An error occurred while splitting the data: {e}")
         raise
 
 # ==================================================
@@ -171,14 +171,14 @@ def preprocess_data(X_train, X_test):
         X_train_scaled = pd.DataFrame(X_train_scaled, columns=X_train.columns)
         X_test_scaled = pd.DataFrame(X_test_scaled, columns=X_test.columns)
 
-        logging.info("✅ Data Preprocessing Completed.")
+        logging.info(" Data Preprocessing Completed.")
         logging.info("Sample scaled training data:")
         logging.info(X_train_scaled.head())
 
         return X_train_scaled, X_test_scaled, scaler
 
     except Exception as e:
-        logging.error(f"❌ An error occurred during data preprocessing: {e}")
+        logging.error(f" An error occurred during data preprocessing: {e}")
         raise
 
 # ==================================================
@@ -194,7 +194,7 @@ def train_random_forest(X_train, y_train, X_test, y_test):
         rf_model.fit(X_train, y_train)
         y_pred_rf = rf_model.predict(X_test)
 
-        logging.info("✅ Random Forest Model Trained.")
+        logging.info(" Random Forest Model Trained.")
         logging.info("Classification Report:")
         logging.info(classification_report(y_test, y_pred_rf))
         logging.info(f"Random Forest ROC AUC Score: {roc_auc_score(y_test, y_pred_rf)}")
@@ -202,7 +202,7 @@ def train_random_forest(X_train, y_train, X_test, y_test):
         return rf_model, y_pred_rf
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while training the Random Forest model: {e}")
+        logging.error(f" An error occurred while training the Random Forest model: {e}")
         raise
 
 # ==================================================
@@ -219,7 +219,7 @@ def train_xgboost(X_train, y_train, X_test, y_test):
         xgb_model.fit(X_train, y_train)
         y_pred_xgb = xgb_model.predict(X_test)
 
-        logging.info("✅ XGBoost Model Trained.")
+        logging.info(" XGBoost Model Trained.")
         logging.info("Classification Report:")
         logging.info(classification_report(y_test, y_pred_xgb))
         logging.info(f"XGBoost ROC AUC Score: {roc_auc_score(y_test, y_pred_xgb)}")
@@ -227,7 +227,7 @@ def train_xgboost(X_train, y_train, X_test, y_test):
         return xgb_model, y_pred_xgb
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while training the XGBoost model: {e}")
+        logging.error(f" An error occurred while training the XGBoost model: {e}")
         raise
 
 # ==================================================
@@ -277,7 +277,7 @@ def visualize_results(y_test, y_pred_rf, y_pred_xgb):
         plt.show()
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while visualizing results: {e}")
+        logging.error(f" An error occurred while visualizing results: {e}")
         raise
 
 # ==================================================
@@ -305,10 +305,10 @@ def save_models_and_predictions(rf_model, xgb_model, scaler, X_test, y_test, y_p
         })
         predictions.to_csv('predictions.csv', index=False)
 
-        logging.info("✅ Models, scaler, and predictions saved successfully.")
+        logging.info(" Models, scaler, and predictions saved successfully.")
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while saving models and predictions: {e}")
+        logging.error(f" An error occurred while saving models and predictions: {e}")
         raise
 
 # ==================================================
@@ -347,7 +347,7 @@ def load_and_predict():
         logging.info("XGBoost Predictions: %s", xgb_model.predict(new_data_scaled))
 
     except Exception as e:
-        logging.error(f"❌ An error occurred while loading and predicting with models: {e}")
+        logging.error(f" An error occurred while loading and predicting with models: {e}")
         raise
 
 # ==================================================
@@ -422,4 +422,4 @@ if __name__ == "__main__":
         load_and_predict()
 
     except Exception as e:
-        logging.error(f"❌ An error occurred in the main execution: {e}")
+        logging.error(f" An error occurred in the main execution: {e}")
